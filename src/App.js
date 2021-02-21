@@ -1,23 +1,25 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  const [marketplaces, setMarketPlaces] = useState([])
+  useEffect(() => {
+    // when the component loads, make an http request and get some data.
+    async function fetchData() {
+      const response = await fetch(`http://localhost:5000/api/marketplaces`);
+      const themarketplacejson = await response.json()
+
+      // store data in the marketplaces variable declared above
+      setMarketPlaces(themarketplacejson)
+    }
+    fetchData();
+  }, [])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1> my marketplaces!!</h1>
+      <h2>you have {marketplaces.length} marketplaces</h2>
+      {/* loop through the data and return a div */}
+      {marketplaces.map(m => <div>hi I'm a div, my name is {m.name}, I have {m.admins.length} admins</div>)}
     </div>
   );
 }
